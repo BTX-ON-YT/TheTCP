@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/app.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="tcpDemoConsole">
+        <ul class='tcpRespones' id='tcpRespones'>
+            <button>Save</button>
+            <li>
+                <input type='text' class='tcpInput' onkeypress="clickPress(event)"></input>
+
+                
+            </li>
+        </ul>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        function clickPress(event) {
+           if (event.key == 'Enter') {
+            var tcpInput = document.getElementsByClassName('tcpInput');
+            var tcpRespones = document.getElementById('tcpRespones');
+            socket.emit('chat message', tcpInput[0].value);
+            tcpInput[0].value = '';
+           }
+        }
+
+        socket.on('chat message', function(msg) {
+            var tcpRespones = document.getElementById('tcpRespones');
+            var tcpResponesLi = document.createElement('li');
+            tcpResponesLi.innerHTML = msg;
+            tcpRespones.appendChild(tcpResponesLi);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    </script>
+</body>
+</html>
